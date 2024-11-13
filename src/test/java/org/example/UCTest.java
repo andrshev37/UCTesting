@@ -1,5 +1,9 @@
 package org.example;
+//package org.junit.jupiter.api;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,33 +16,33 @@ public class UCTest {
     private static final Logger logger = LoggerFactory.getLogger(UCTest.class);
     private static final WebDriver driver = WebDriverSingleton.getDriver();
 
-    private static final WebElement usernameField = driver.findElement(By.id(Config.usernameField));
-    private static final WebElement passwordField = driver.findElement(By.id(Config.passwordField));
 
-    public void clearUsername() {
+    @BeforeAll
+    public static void setup() {
+        driver.get("https://www.saucedemo.com/");
+
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        driver.quit();
+    }
+    final WebElement usernameField = driver.findElement(By.id("user-name"));
+    final WebElement passwordField = driver.findElement(By.id("password"));
+    final WebElement loginButton = driver.findElement(By.id("login-button"));
+    public void clearCredentials() {
+
         usernameField.clear();
         passwordField.clear();
-    }
-    public void clearPassword() {
-        usernameField.clear();
-        passwordField.clear();
-    }
-    public void navigateToLoginPage() {
-        driver.get(Config.SITE);
     }
     public void enterCredentials(String username, String password) {
 
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
     }
-    public void clickLoginButton() {
-        WebElement loginButton = driver.findElement(By.id("login-button"));
-        loginButton.click();
-    }
-
     public String getErrorMessage() {
         //WebElement errorMessage = driver.findElement(By.xpath("//*[@id='login_button_container']/div/form/div[3]"));
-        WebElement errorMessage = driver.findElement(By.xpath("//*[@id='login_button_container']/div/form/div[3]"));
+        WebElement errorMessage = driver.findElement(By.xpath("//*[@id='login_button_container']"));
 
         return errorMessage.getText();
     }
@@ -47,37 +51,41 @@ public class UCTest {
         WebElement dashboard = driver.findElement(By.xpath("//*[@id=\"header_container\"]/div[1]/div[2]/div"));
         return dashboard.getText();
     }
-    public void UC(String errMsgTask, String errMsgShould, String UCn){
-        clickLoginButton();
+
+    @Test
+    public void UC1Test(){
+        //setup();
+        logger.info("Starting UC1");
+        enterCredentials("1", "1" );
+        clearCredentials();
+        loginButton.click();
         String errorMessage = getErrorMessage();
-
-        try {
-            MatcherAssert.assertThat(errMsgTask, errorMessage, Matchers.containsString(errMsgShould));
-            logger.info(UCn , "{} completed.");
-        } catch (AssertionError e) {
-            logger.error("{} failed: {}", UCn , e.getMessage());
-        }
+        MatcherAssert.assertThat("UC1: Error message should match 'Username is required'",
+                errorMessage, Matchers.containsString("Username is required"));
+        logger.info("UC1 completed.");
     }
-    public void UC3(String errMsgTask, String errMsgShould){
-        clickLoginButton();
+    @Test
+    public void UC2Test() {
+        //setup();
+        logger.info("Starting UC2");
+        clearCredentials();
+        enterCredentials("1", "");
+        loginButton.click();
+        String errorMessage = getErrorMessage();
+        MatcherAssert.assertThat("UC2: Error message should match 'Password is required'",
+                errorMessage, Matchers.containsString("Password is required"));
+        logger.info("UC2 completed.");
+    }
+
+    @Test
+    public void UC3Test() {
+        logger.info("Starting UC3");
+        clearCredentials();
+        enterCredentials("performance_glitch_user", "secret_sauce");
+        loginButton.click();
         String dashboardText = getDashboardText();
-        try {
-            MatcherAssert.assertThat(errMsgTask,
-                    dashboardText, Matchers.containsString(errMsgShould));
-            logger.info("UC3 completed.");
-        } catch (AssertionError e) {
-            logger.error("UC3 failed: {}" , e.getMessage());
-        }
-    }
-    public void executeTest(String username, String password, String errMsgTask, String errMsgShould, String UCn) {
-        logger.info("Starting {}" , UCn);
-        navigateToLoginPage();
-
-        enterCredentials(username, password);
-        switch (UCn){
-            case "UC1": clearUsername();
-            case "UC2": clearPassword();UC(errMsgTask,errMsgShould,UCn);
-            case "UC3": UC3(errMsgTask,errMsgShould);
-        }
+        MatcherAssert.assertThat("UC3: Dashboard title should match 'Swag Labs'",
+                dashboardText, Matchers.containsString("Swag Labs"));
+        logger.info("UC3 completed.");
     }
 }
