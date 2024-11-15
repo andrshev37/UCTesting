@@ -2,7 +2,7 @@ package org.example;
 
 public class Config {
     //browser configuration
-    public static final String BROWSER = "firefox"; //"firefox" or "edge"
+    public static final String BROWSER = "edge"; //"firefox" or "edge"
     //site configuration
     public static final String SITE = "https://www.saucedemo.com/";
     //web elements configuration
