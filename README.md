@@ -1,3 +1,6 @@
+Branches: "main" whith Junit; "oldimpruved" impruved version of old version whithout using of junit
+    Currently working on branche "configurated" in which will be congig file for configuration(,site ,browser 
+    ,inputs for tests)
 Various of additional options:
 
 Test Automation tool: Selenium WebDriver;
