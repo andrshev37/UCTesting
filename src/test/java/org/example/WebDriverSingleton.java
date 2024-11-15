@@ -11,12 +11,11 @@ public class WebDriverSingleton {
 
     private WebDriverSingleton() {}
 
-    public static WebDriver getDriver() {
+    public static WebDriver getDriver(String browser) {
         if (driver == null) {
-            String browser = Config.BROWSER;
+
             switch (browser.toLowerCase()) {
                 case "firefox":
-                    //System.setProperty("webdriver.gecko.driver", "path/to/geckodriver");
                     driver = new FirefoxDriver();
                     break;
                 case "edge":
@@ -26,8 +25,7 @@ public class WebDriverSingleton {
                 default:
                     throw new IllegalArgumentException("Unsupported browser: " + browser);
             }
-            //driver.get("https://www.saucedemo.com/");
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         }
         return driver;
     }
