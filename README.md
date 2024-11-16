@@ -1,21 +1,20 @@
-Branches: "main" whith Junit; "oldimpruved" impruved version of old version whithout using of junit
-    Currently working on branche "configurated" in which will be congig file for configuration(,site ,browser 
-    ,inputs for tests)
+Branches: "main" whith Junit,PageObject,Cucumber; "oldimpruved" impruved version of old version whithout using of junit
+    src/test/resourses/features/login.feature for testing configurations
 Various of additional options:
 
-Test Automation tool: Selenium WebDriver;
+Test Automation tool: Selenium WebDriver;  
 
 Project Builder: Maven;
 
 Browsers: 1) Firefox; 2) Edge;
 
-Locators: XPath;
+Locators: XPath; And ID
 
-Test Runner: JUnit;
+Test Runner: JUnit; Jupiter-Junit and Cucumber-Junit
 
-[Optional] Patterns: 1) Singleton; 2) Adapter; 3) Strategy;
+[Optional] Patterns: 1) Singleton; 2) Adapter; 3) Strategy;WebDriverSingleton.java
 
-[Optional] Test automation approach: BDD;
+[Optional] Test automation approach: BDD; whith Cucumber
 
 Assertions: Hamcrest;
 
